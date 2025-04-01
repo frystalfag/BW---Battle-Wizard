@@ -13,7 +13,7 @@ public class Test1 : MonoBehaviour
     }
 
     private void Update()
-    {
+    { 
         int number = 3;
     }
 }

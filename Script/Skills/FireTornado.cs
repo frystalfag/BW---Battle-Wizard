@@ -6,6 +6,7 @@ public class FireTornado : Spell
     public float duration = 5f;
     public float damagePerSecond = 20f;
     public static float manaCost = 20f;
+    [Serialize]private GameObject tornado; 
     
     private float lifetime;
 
@@ -25,12 +26,12 @@ public class FireTornado : Spell
     
     public override void CastSpell()
     {
-        Debug.Log("FireTornado");
+        Instantiate(gameObject);
     }
 
     public void OnTriggerStay(Collider other)
     {
-        Enemy enemy = GetComponent<Enemy>();
+        Enemy enemy = other.GetComponent<Enemy>();
         if (enemy != null)
         {
             HealthBar EnemyHealth = other.GetComponent<HealthBar>();

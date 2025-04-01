@@ -1,12 +1,41 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SpellType
+{
+    FireTornado
+}
+
+[Serializable] public class SpellPrefabs
+{
+    public GameObject Prefab;
+    public SpellType Type;
+}
 public class SkillController : MonoBehaviour
 {
-    public List<Skill> Skills = new List<Skill>();
+    [SerializeField] public List<SpellPrefabs> Skills = new List<SpellPrefabs>();
+    public Dictionary<SpellType, GameObject> SkillDictionary = new Dictionary<SpellType, GameObject>();
+    
     private Transform PlayerTransform;
     public ManaBar _manaBar;
-    public float curMana; 
+    public float curMana;
+
+    void Awake()
+    {
+        foreach (var i in Skills)
+        {
+            if (SkillDictionary.ContainsKey(i.Type))
+            {
+                Debug.LogError(i.Type + " is already in SkillDictionary");
+            }
+            else
+            {
+                SkillDictionary.Add(i.Type, i.Prefab);
+            }
+        }
+    }
+    
     void Start()
     {
         _manaBar = GetComponent<ManaBar>();
@@ -19,7 +48,7 @@ public class SkillController : MonoBehaviour
         {
             if (curMana >= FireTornado.manaCost)
             {
-                SpellFactory.CreateSpell("FireTornado");
+                //SpellFactory.CreateSpell("FireTornado");
                 _manaBar.UseMana(FireTornado.manaCost);
             }
             else
@@ -31,7 +60,7 @@ public class SkillController : MonoBehaviour
         {
             if (curMana >= Slow.manaCost)
             {
-                SpellFactory.CreateSpell("Slow");
+                //SpellFactory.CreateSpell("Slow");
                 _manaBar.UseMana(Slow.manaCost);
             }
             else
