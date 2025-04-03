@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections.Generic;
 
 public class EnemyController : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class EnemyController : MonoBehaviour
     private readonly int runAnimParam = Animator.StringToHash("Run");
     
     private Transform playerTransform;
+    
+    private List<IPassiveEffect> activeEffects = new List<IPassiveEffect>();
     
     private void Awake()
     {
@@ -78,9 +81,20 @@ public class EnemyController : MonoBehaviour
         agent.ResetPath();
     }
     
-    public static void ChangeSpeed(float newSpeed)
+    public void ChangeSpeed(float newSpeed)
     {
         movementSpeed = Mathf.Max(0, newSpeed); 
+    }
+
+    public void ResetSpeed()
+    {
+        movementSpeed = movementSpeed;    
+    }
+
+    public void ApplyPassiveEffect(IPassiveEffect passiveEffect)
+    {
+        passiveEffect.ApplyEffect(this);
+        activeEffects.Add(passiveEffect);
     }
     
     public void UpdateSpeed()
