@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
@@ -12,8 +13,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float attackDistance = 0.5f;
     
     [SerializeField] private float distanceToPlayer;
-    
-    private static float movementSpeed = 1f;
+
+    private float defaultSpeed = 1; 
+    private float movementSpeed;
     
     private readonly int runAnimParam = Animator.StringToHash("Run");
     
@@ -25,6 +27,7 @@ public class EnemyController : MonoBehaviour
     {
         if (agent == null) agent = GetComponent<NavMeshAgent>();
         if (animator == null) animator = GetComponent<Animator>();
+        defaultSpeed = agent.speed;
     }
     
     private void Start()
@@ -88,13 +91,18 @@ public class EnemyController : MonoBehaviour
 
     public void ResetSpeed()
     {
-        movementSpeed = movementSpeed;    
+        movementSpeed = defaultSpeed;    
     }
 
     public void ApplyPassiveEffect(IPassiveEffect passiveEffect)
     {
         passiveEffect.ApplyEffect(this);
         activeEffects.Add(passiveEffect);
+    }
+    
+    public void StartEffectCoroutine(IEnumerator coroutine)
+    {
+        StartCoroutine(coroutine);
     }
     
     public void UpdateSpeed()

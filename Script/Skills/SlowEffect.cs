@@ -5,7 +5,6 @@ public class SlowEffect : IPassiveEffect
 {
     private float newSpeed;
     private float duration;
-
     private EnemyController enemy;
 
     public SlowEffect(float newSpeed, float duration)
@@ -18,16 +17,16 @@ public class SlowEffect : IPassiveEffect
     {
         this.enemy = enemy;
         enemy.ChangeSpeed(newSpeed);
-        enemy.StartCoroutine(RemoveCooldown());
+        enemy.StartEffectCoroutine(RemoveCooldown(enemy)); 
     }
 
-    public IEnumerator RemoveCooldown()
+    private IEnumerator RemoveCooldown(EnemyController enemy)
     {
         yield return new WaitForSeconds(duration);
-        RemoveEffect();
+        RemoveEffect(enemy);
     }
 
-    public void RemoveEffect()
+    public void RemoveEffect(EnemyController enemy)
     {
         enemy.ResetSpeed();
     }

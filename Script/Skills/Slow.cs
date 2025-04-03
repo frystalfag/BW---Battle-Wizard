@@ -4,7 +4,6 @@ public class Slow : Spell
 {
     public float NewSpeed = 0.5f;
     public float Duration = 5f;
-    public bool IsSlow = false;
     public static float manaCost = 20f;
 
     public override void CastSpell()
