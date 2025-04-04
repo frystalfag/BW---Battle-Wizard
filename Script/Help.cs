@@ -1,17 +1,18 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class Help
 {
-    /*public GameObject GetPrefab(SkeletType types)
+    public static GameObject GetPrefab<T>(T types, Dictionary<T, GameObject> prefabs)
     {
-        if (skelets.TryGetValue(types, out GameObject obj))
+        if (prefabs.TryGetValue(types, out GameObject obj))
         {
             return obj;    
         }
         else
         {
-            Debug.LogError($"Skelet prefab {types} not found");
+            Debug.LogError($"Prefab {types} not found");
             return null;
         }
-    }*/
+    }
 }

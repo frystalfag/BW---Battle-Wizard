@@ -77,4 +77,17 @@ public class SkillController : MonoBehaviour
             Debug.Log(4);
         }
     }
+
+    public GameObject GetPrefab(SpellType types)
+    {
+        if (SkillDictionary.TryGetValue(types, out GameObject prefab))
+        {
+            return prefab;
+        }
+        else
+        {
+            Debug.LogError($"Spell prefab {types} not found");
+            return null;    
+        }
+    }
 }

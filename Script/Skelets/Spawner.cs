@@ -50,19 +50,6 @@ public class Spawner : MonoBehaviour
         InvokeRepeating("SpawnMob", TimeToSpawn, 20);
     }
 
-    public GameObject GetPrefab(SkeletType types)
-    {
-        if (skelets.TryGetValue(types, out GameObject obj))
-        {
-            return obj;    
-        }
-        else
-        {
-            Debug.LogError($"Skelet prefab {types} not found");
-            return null;
-        }
-    }
-
     void SpawnMob()
     {
         if (MobsList.Count >= MaximumMobs)
@@ -73,7 +60,7 @@ public class Spawner : MonoBehaviour
         {
             int level = UnityEngine.Random.Range(0, MobTypes.Length);
             SkeletType MobType = types[Random.Range(0, MobTypes.Length)];
-            Skelet Skelet = SkeletFactory.CreateSkelet(MobType, level, this, 10f, 10f, 10f);
+            Skelet Skelet = SkeletFactory.CreateSkelet(MobType, level, this, 10f, 10f, 10f, skelets);
             Vector3 spawnOffset = new Vector3(Random.insideUnitCircle.x, 0, Random.insideUnitCircle.y) * RadiusToSpawn;
             Vector3 spawnPos = transform.position + spawnOffset;
 

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,7 @@ public class ManaBar : MonoBehaviour
     public Image manaBar;   
     public float maxMana = 100f;
     private float _currentMana;
+    private bool _isRegeneretion = false;
 
     void Start()
     {
@@ -14,9 +16,9 @@ public class ManaBar : MonoBehaviour
 
     void Update()
     {
-        if (_currentMana <= maxMana)
+        if (_currentMana <= maxMana && !_isRegeneretion)
         {
-            RegenerateMana(2);
+            StartCoroutine(RegenerateMana(2));
         }
     }
     
@@ -43,11 +45,17 @@ public class ManaBar : MonoBehaviour
         UpdateManaBar();
     }
 
-    public void RegenerateMana(float amount)
+    public IEnumerator RegenerateMana(float amount)
     {
-        _currentMana += amount;
-        _currentMana = Mathf.Clamp(_currentMana, 0, maxMana);
-        UpdateManaBar();
+        _isRegeneretion = true;
+        while (_currentMana < maxMana)
+        {
+            _currentMana += amount;
+            _currentMana = Mathf.Clamp(_currentMana, 0, maxMana);
+            UpdateManaBar();
+            yield return new WaitForSeconds(1f);
+        }
+        _isRegeneretion = false;
     }
 
     private void UpdateManaBar()
