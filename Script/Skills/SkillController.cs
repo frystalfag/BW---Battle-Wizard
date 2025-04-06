@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum SpellType
 {
-    FireTornado
+    FireTornado, FireBall, FireSword
 }
 
 [Serializable] public class SpellPrefabs
@@ -60,7 +60,7 @@ public class SkillController : MonoBehaviour
         {
             if (curMana >= Slow.manaCost)
             {
-                //SpellFactory.CreateSpell("Slow");
+                //SpellFactory.CreateSpell("FireBall");
                 _manaBar.UseMana(Slow.manaCost);
             }
             else
@@ -70,7 +70,15 @@ public class SkillController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            Debug.Log(3);
+            if (curMana >= Slow.manaCost)
+            {
+                //SpellFactory.CreateSpell("FireSword");
+                _manaBar.UseMana(Slow.manaCost);
+            }
+            else
+            {
+                Debug.Log("Mana missing.");
+            }
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {

@@ -8,6 +8,6 @@ public class SpellFactory
         GameObject SpellPrefab = Help.GetPrefab(spellType, SpellDictionary);
         GameObject SpellObj = Object.Instantiate(SpellPrefab);
         
-        
+         
     }
 }
