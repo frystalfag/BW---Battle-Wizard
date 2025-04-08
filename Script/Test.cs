@@ -30,11 +30,28 @@ public class Test : MonoBehaviour
         
         Transform n = GetComponent<Transform>();
         TestMethod("Test")*/;
-        
+        float x;
+        if (TryDivide(10, 2, out x))
+        {
+            Debug.Log(x);
+        }
+
     }
     
     /*public T TestMethod<T>(T value)
     {
         return value;        
     }*/
+
+    public bool TryDivide(int a, int b, out float result)
+    {
+        if (b == 0)
+        {
+            result = 0;
+            return false;
+        }
+        result = (float)a / b;
+        return true;
+    }
+    
 }
