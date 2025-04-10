@@ -18,4 +18,15 @@ public class CharacterContext : MonoBehaviour
     {
         stateMachine.ChangeState(new IdleState(this));
     }
+
+    public bool IsFinished(string name)
+    {
+        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+        return state.IsName(name) && state.normalizedTime >= 1f;
+    }
+
+    public void ChangeState(IState newState)
+    {
+        stateMachine.ChangeState(newState);
+    }
 }

@@ -13,8 +13,6 @@ public void ChangeState(IState newState)
 
 void Update()
 {
-    
-    
     currentState?.Update();    
 }
 }
