@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.TextCore.Text;
 
 public class Attack : MonoBehaviour
 {
@@ -19,13 +20,13 @@ public class Attack : MonoBehaviour
     public Transform firePoint;
     public LayerMask enemyLayer;
 
-    private Animator animator;
+    private CharacterContext characterContext;
     private bool canAttack = true;
     private Queue<GameObject> bulletPool = new Queue<GameObject>();
     
     void Start()
     {
-        animator = GetComponent<Animator>();
+        characterContext = GetComponent<CharacterContext>();
         InitializeBulletPool();
         
         Test1 t = new Test1("Maks", 100);
@@ -54,7 +55,7 @@ public class Attack : MonoBehaviour
 
     void PerformAttack(Vector3 targetPosition)
     {
-        animator.SetTrigger("Atack");
+        characterContext.ChangeState(new AttackState(characterContext));
         canAttack = false;
 
         StartCoroutine(FireBullet(targetPosition));
