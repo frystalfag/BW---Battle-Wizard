@@ -23,17 +23,21 @@ public abstract class Skelet : MonoBehaviour
     
     
 
-    public void Initialize(Spawner spawner, int level, float damage, float attackDis, float radius)
+    public void Initialize(Spawner spawner, int level, float damage, float attackDistance, float triggerRadius)
     {
-        level = level;
-        spawner = spawner;
-        damage = damage;
-        
-        triggerRadius = radius;
-        attackDistance = attackDis;
+        this.spawner = spawner;
+        this.level = level;
+        this.damage = damage;
+        this.attackDistance = attackDistance;
+        this.triggerRadius = triggerRadius;
         
         agent = GetComponent<NavMeshAgent>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+    }
+
+    public void SetTarget(Transform Player)
+    {
+        this.playerTransform = Player;
     }
     
     public void Move()

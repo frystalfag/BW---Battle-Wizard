@@ -23,4 +23,9 @@ public class MovementState : IState
     {
         animator.SetFloat("Speed", movementSpeed);
     }
+    
+    public void UpdateSpeed(float speed)
+    {
+        movementSpeed = speed;
+    }
 }

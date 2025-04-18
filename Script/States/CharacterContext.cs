@@ -5,10 +5,20 @@ public class CharacterContext : MonoBehaviour
 {
     public Animator animator;
     private StateMachine stateMachine;
+    private IState currentState;
 
     private void Awake()
     {
         stateMachine = new StateMachine();
+    }
+
+    public void ChangeState(IState newState)
+    {
+        if (currentState == newState) {return;}
+        
+        currentState?.Exit();
+        currentState = newState;
+        currentState?.Enter();
     }
 
     void Start()
@@ -22,8 +32,8 @@ public class CharacterContext : MonoBehaviour
         return state.IsName(name) && state.normalizedTime >= 1f;
     }
 
-    public void ChangeState(IState newState)
+    private void Update()
     {
-        stateMachine.ChangeState(newState);
+        currentState?.Update();
     }
 }
