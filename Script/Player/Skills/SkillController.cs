@@ -71,7 +71,7 @@ public class SkillController : MonoBehaviour
             PrepareCast(SpellType.FireSword, fireSwordManaCost);
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && isCasting)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 15f, groundLayer))
@@ -81,19 +81,6 @@ public class SkillController : MonoBehaviour
                 mouseController.SetActive(false);
                 isCasting = false;
             }
-        }
-    }
-
-    public GameObject GetPrefab(SpellType types)
-    {
-        if (SkillDictionary.TryGetValue(types, out GameObject prefab))
-        {
-            return prefab;
-        }
-        else
-        {
-            Debug.LogError($"Spell prefab {types} not found");
-            return null;    
         }
     }
 

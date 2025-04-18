@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.TextCore.Text;
 
 public class PlayerController : MonoBehaviour
 {
@@ -17,19 +18,22 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
 
     private CharacterController controller;
+    private CharacterContext character;
     private Animator animator;
     private HealthBar PlayerHealth;
     private Vector3 velocity;
     private bool isGrounded;
     private float currentSpeed;
+    private float speedBlend;
     
     private readonly int DieAnimParam = Animator.StringToHash("Die");
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        animator = GetComponent<Animator>();
+        character = GetComponent<CharacterContext>();
         PlayerHealth = GetComponent<HealthBar>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -56,20 +60,24 @@ public class PlayerController : MonoBehaviour
         Vector3 move = transform.right * x + transform.forward * z;
         
         bool isRunning = Input.GetKey(KeyCode.LeftShift) && isGrounded;
-        currentSpeed = isRunning ? runSpeed : walkSpeed;
-        
-        controller.Move(move * currentSpeed * Time.deltaTime);
-        
         bool isMoving = move.magnitude > 0.1f;
-        animator.SetBool("Walk", isMoving);
-        animator.SetBool("Run", isMoving && isRunning);
+        
+        float curSpeed = isMoving ? (isRunning ? runSpeed : walkSpeed) : 0f;
+        speedBlend = Mathf.MoveTowards(speedBlend, curSpeed,    0.5f * Time.deltaTime);
+        controller.Move(move * curSpeed * Time.deltaTime);
+        
+        character.ChangeState(new MovementState(animator, speedBlend, character) );
+        
+
+        // character.ChangeState(new WalkForwardState(character));
+        // animator.SetBool("Run", isMoving && isRunning);
     }
 
     private void HandleJumping()
     {
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            animator.SetTrigger("Jump");
+            //animator.SetTrigger("Jump");
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
         if (isGrounded && velocity.y < 0)
@@ -88,8 +96,6 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator Die()
     {
-        animator.SetBool(DieAnimParam, true);
-        animator.SetBool(DieAnimParam, false);
         yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }
