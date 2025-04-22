@@ -5,7 +5,7 @@ public class MovementState : IState
 {
     public Animator animator;
     public CharacterContext characterContext;
-    private float movementSpeed;
+    public float movementSpeed;
 
     public MovementState(Animator animator, float speed, CharacterContext characterContext)
     {

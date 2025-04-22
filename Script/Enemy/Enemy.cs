@@ -13,8 +13,6 @@ public class Enemy : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         healthBar = gameObject.GetComponent<HealthBar>();
-        // healthBar.CurHealth = 56;
-        // GameMenager.Instance.AddScore(10);
     }
 
     void Update()

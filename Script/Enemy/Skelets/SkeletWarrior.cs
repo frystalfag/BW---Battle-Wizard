@@ -2,7 +2,7 @@ using UnityEngine;
 
 class SkeletWarrior : Skelet
 {
-    public override void Atack()
+    public override void Attack()
     {
         Debug.Log("Warrior Atack");
     }

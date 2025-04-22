@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using UnityEngine;
 
 public class Test1 : MonoBehaviour
@@ -16,4 +16,4 @@ public class Test1 : MonoBehaviour
     { 
         int number = 3;
     }
-}
+}*/

@@ -28,8 +28,6 @@ public class Attack : MonoBehaviour
     {
         characterContext = GetComponent<CharacterContext>();
         InitializeBulletPool();
-        
-        Test1 t = new Test1("Maks", 100);
     }
 
     void Update()

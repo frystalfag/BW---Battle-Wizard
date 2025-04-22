@@ -36,4 +36,17 @@ public class CharacterContext : MonoBehaviour
     {
         currentState?.Update();
     }
+
+    public IState GetCurrentState()
+    {
+        return currentState;
+    }
+    
+    public void UpdateState()
+    {
+        if (currentState != null)
+        {
+            currentState.Update();
+        }
+    }
 }

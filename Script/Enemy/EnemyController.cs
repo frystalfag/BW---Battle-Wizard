@@ -50,38 +50,11 @@ public class EnemyController : MonoBehaviour
     
     private void Update()
     {
-        if (!IsAgentReady() || playerTransform == null) return;
-        
-        distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
-        
-        if (distanceToPlayer < triggerRadius)
-        {
-            ChasePlayer();
-        }
-        else
-        {
-            StopChasing();
-        }
     }
     
     private bool IsAgentReady()
     {
         return agent != null && agent.enabled && agent.isOnNavMesh;
-    }
-    
-    private void ChasePlayer()
-    {
-        if (!agent.hasPath || agent.remainingDistance > attackDistance)
-        {
-            agent.SetDestination(playerTransform.position);
-        }
-        
-        animator.SetBool(runAnimParam, true);
-    }
-    
-    private void StopChasing()
-    {
-        agent.ResetPath();
     }
     
     public void ChangeSpeed(float newSpeed)
