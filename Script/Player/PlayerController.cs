@@ -65,8 +65,16 @@ public class PlayerController : MonoBehaviour
         float curSpeed = isMoving ? (isRunning ? runSpeed : walkSpeed) : 0f;
         speedBlend = Mathf.MoveTowards(speedBlend, curSpeed,    0.5f * Time.deltaTime);
         controller.Move(move * curSpeed * Time.deltaTime);
+
+        if (isMoving)
+        {
+            character.ChangeState(new MovementState(animator, speedBlend, character) );    
+        }
         
-        character.ChangeState(new MovementState(animator, speedBlend, character) );
+        else if (!isMoving) 
+        {
+            character.ChangeState(new MovementState(animator, 0, character) );    
+        }
         
 
         // character.ChangeState(new WalkForwardState(character));

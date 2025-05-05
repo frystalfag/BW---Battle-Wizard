@@ -1,9 +1,25 @@
 using UnityEngine;
 
+namespace MyNamespace
+{
+    namespace My
+    {
+        
+    }
+    
+    class a
+    {
+        void lol()
+        {
+            Debug.Log("Lol");
+        }
+    }
+}
 public class Test : MonoBehaviour
 {
     void Start()
     {
+        MyNamespace.a a = new MyNamespace.a();
         /*Skelet Mage = SkeletFactory.CreateSkelet("Mage");
         Skelet Warrior = SkeletFactory.CreateSkelet("Warrior");
         Skelet Warrior2 = SkeletFactory.CreateSkelet("Warrior2");
@@ -42,7 +58,6 @@ public class Test : MonoBehaviour
     {
         return value;        
     }*/
-
     public bool TryDivide(int a, int b, out float result)
     {
         if (b == 0)

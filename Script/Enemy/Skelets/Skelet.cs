@@ -9,7 +9,7 @@ public abstract class Skelet : MonoBehaviour
     [SerializeField] private float distanceToPlayer;
     
     [Header("Movement")]
-    private static float moveSpeed = 1f;
+    [SerializeField] private float moveSpeed = 3.5f; 
     
     [Header("Stats")]
     public int level { get; protected set; }
@@ -31,16 +31,18 @@ public abstract class Skelet : MonoBehaviour
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         character = new CharacterContext();
+        character.animator = animator; 
     }
     
     private void Start()
     {
         if (agent != null)
         {
-            agent.speed = moveSpeed * 3.5f;
+            agent.speed = moveSpeed;
         }
         
-        character.ChangeState(new MovementState(animator, 0, character));
+        character.ChangeState(new IdleState(character));
+        agent.speed = moveSpeed;
     }
     
     public void Initialize(Spawner spawner, int level, float damage, float attackDistance, float triggerRadius)
@@ -65,10 +67,10 @@ public abstract class Skelet : MonoBehaviour
         {
             ChasePlayer();
         }
-        else if (agent != null && playerTransform != null)
+        else if (agent != null && playerTransform != null && distanceToPlayer <= attackDistance)
         {
             StopChasing();
-            Attack();
+            PerformAttack(); 
         }
         else
         {
@@ -82,10 +84,9 @@ public abstract class Skelet : MonoBehaviour
         {
             agent.SetDestination(playerTransform.position);
             if (!(character.GetCurrentState() is AttackState) && 
-                (!(character.GetCurrentState() is MovementState) || 
-                 ((MovementState)character.GetCurrentState()).movementSpeed != moveSpeed))
+                !(character.GetCurrentState() is RunState))
             {
-                character.ChangeState(new MovementState(animator, moveSpeed, character));
+                character.ChangeState(new RunState(character));
             }
         }
     }
@@ -93,10 +94,22 @@ public abstract class Skelet : MonoBehaviour
     private void StopChasing()
     {
         agent.ResetPath();
-        character.ChangeState(new MovementState(animator, 0f, character));
+        if (!(character.GetCurrentState() is IdleState) && 
+            !(character.GetCurrentState() is AttackState)) 
+        {
+            character.ChangeState(new IdleState(character));
+        }
     }
     
     public abstract void Attack();
+    
+    private void PerformAttack()
+    {
+        if (!(character.GetCurrentState() is AttackState))
+        {
+            character.ChangeState(new AttackState(character)); 
+        }
+    }
 
     public void LevelUp()
     {
@@ -123,7 +136,7 @@ public abstract class Skelet : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackDistance);
     }
 
-    protected virtual void Update()
+    protected virtual void FixedUpdate()
     {
         if (playerTransform == null)
         {
@@ -131,28 +144,12 @@ public abstract class Skelet : MonoBehaviour
             if (player != null)
             {
                 playerTransform = player.transform;
+                Debug.Log("Player: " + player.name);
             }
             return;
         }
         
-        distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
-        
-        if (distanceToPlayer <= attackDistance)
-        {
-            if (!(character.GetCurrentState() is AttackState))
-            {
-                StopChasing();
-            }
-        }
-        else if (distanceToPlayer <= triggerRadius)
-        {
-            ChasePlayer();
-        }
-        else
-        {
-            StopChasing();
-        }
-        
+        Move();
         character.UpdateState();
     }
 }
